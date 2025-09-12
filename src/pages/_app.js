@@ -1,7 +1,8 @@
+// pages/_app.js
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import { useEffect } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
-import theme from "./theme";
+import theme from "../theme"; // <-- use ../ instead of ./ so it points outside /pages
 
 function MyApp({ Component, pageProps }) {
   // Load Bootstrap JS only on the client side
