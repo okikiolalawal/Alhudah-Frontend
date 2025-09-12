@@ -6,7 +6,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Image from "next/image";
-import style from "../styles/SignUp.module.css";
+import style from "../styles/background.module.css";
 import Logo from '../logo-removebg-preview.png'
 import LandingPageNav from "@/Components/LandingPageNav";
 const ParentSignUp = () => {
@@ -75,7 +75,7 @@ const ParentSignUp = () => {
   return (
     <div className={style.page}>
       <LandingPageNav></LandingPageNav>
-      <div className={style.body}>
+      <div className={style.bgLemonGreen}>
         <div className="col-6 mx-auto border rounded-3 my-5 bg-light">
           <div className="d-flex justify-content-center">
             <Image
