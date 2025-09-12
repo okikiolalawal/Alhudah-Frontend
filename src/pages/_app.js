@@ -2,7 +2,7 @@
 import "bootstrap/dist/css/bootstrap.min.css"; 
 import { useEffect } from "react";
 import { ChakraProvider } from "@chakra-ui/react";
-import theme from "../theme"; // note: ../theme
+import theme from "./theme"; // note: ../theme
 
 function MyApp({ Component, pageProps }) {
   // Load Bootstrap JS only on the client side
