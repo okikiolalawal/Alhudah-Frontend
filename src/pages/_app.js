@@ -1,12 +1,19 @@
-// import '@/styles/globals.css'
-import "../../node_modules/bootstrap/dist/css/bootstrap.css"
-import dynamic from "next/dynamic"
-// import "../../node_modules/bootstrap/dist/js/bootstrap.bundle.js"
-export default function App({ Component, pageProps }) {
-  // const bootstrapjs = dynamic(async()=>
-  // await import('../../node_modules/bootstrap/dist/js/bootstrap.bundle.js'),{
-  //   loading: ()=><p>Loading</p>
-  // }
-  // )
-  return <Component {...pageProps} />
+import "bootstrap/dist/css/bootstrap.min.css"; 
+import { useEffect } from "react";
+import { ChakraProvider } from "@chakra-ui/react";
+import theme from "./theme";
+
+function MyApp({ Component, pageProps }) {
+  // Load Bootstrap JS only on the client side
+  useEffect(() => {
+    import("bootstrap/dist/js/bootstrap.bundle.min.js");
+  }, []);
+
+  return (
+    <ChakraProvider theme={theme}>
+      <Component {...pageProps} />
+    </ChakraProvider>
+  );
 }
+
+export default MyApp;

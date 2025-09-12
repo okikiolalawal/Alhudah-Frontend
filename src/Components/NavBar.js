@@ -1,14 +1,18 @@
-import React from 'react'
-import Image from 'next/image'
-import logo from '../logo-removebg-preview.png'
-import Link from 'next/link'
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 const NavBar = () => {
   return (
     <div>
       <div className="d-flex justify-content-between p-1 bg-success text-white align-items-center">
         <div className="d">
           <div className="d-flex g-1">
-            <Image src={logo} width={90} className="ms-5" />
+            <Image
+              src="/logo-removebg-preview.png"
+              width={100}
+              height={50}
+              alt="School Logo"
+            />{" "}
             <div className="fs-5 d-flex align-items-center ms-3 ">
               Al-Hudah Model College
             </div>
@@ -35,6 +39,6 @@ const NavBar = () => {
       </div>
     </div>
   );
-}
+};
 
-export default NavBar
+export default NavBar;

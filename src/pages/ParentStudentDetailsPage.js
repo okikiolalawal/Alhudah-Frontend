@@ -1,5 +1,4 @@
 import React from 'react'
-import logo from '../logo-removebg-preview.png'
 import Image from 'next/image'
 import Link from "next/link";
 import style from '../styles/SignUp.module.css'

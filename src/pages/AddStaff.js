@@ -10,32 +10,30 @@ import * as yup from "yup";
 import Image from "next/image";
 import Logo from "../logo-removebg-preview.png";
 
-const ParentSignUp = () => {
+const AddStaff = () => {
   const router = useRouter();
   const handleClick = () => setShow(!show);
   const [show, setShow] = useState(false);
-  const [myImage, setmyImage] = useState(null);
   let formik = useFormik({
     initialValues: {
-      fullName: "",
-      email: "",
+      surName: "",
+      otherNames: "",
       phoneNo: "",
-      dateOfBirth: "",
+      email: "",
       address: "",
       password: "",
       confirmPassword: "",
-      occupation: "",
-      role: "parent",
     },
     validationSchema: yup.object({
-      fullName: yup.string().required("This field id required"),
+      surName: yup.string().required("This field is required"),
+      otherNames: yup.string().required("This field is required"),
       email: yup
         .string()
-        .required("This field id required")
+        .required("This field is required")
         .email("This is Not a Valid Email"),
-      phoneNo: yup.string().required("This field id required"),
-      dateOfBirth: yup.date().required("This field id required"),
-      address: yup.string().required("This field id required"),
+      phoneNo: yup.string().required("This field is required"),
+      dateOfBirth: yup.date().required("This field is required"),
+      address: yup.string().required("This field is required"),
       confirmPassword: yup
         .string()
         .matches(
@@ -43,7 +41,6 @@ const ParentSignUp = () => {
           "Password must contain 4-10 Characters, at least One number and at least one UPPERCASE letter"
         )
         .required("This field id required"),
-      occupation: yup.string().required("This field is Required"),
       password: yup
         .string()
         .matches(
@@ -52,31 +49,23 @@ const ParentSignUp = () => {
         )
         .required("This field id required"),
     }),
-    onSubmit: (values) => {
-      if (values.confirmPassword !== values.password) {
-        Swal.fire("Error", "passwords dont match", "error");
-      }
-
-      console.log(myImage);
+    onSubmit: async (values) => {
       console.log(values);
-      if (myImage) {
-        let img = new FileReader();
-        img.readAsDataURL(myImage);
-        img.onload = () => {
-          console.log(img);
-          let endpoint = "http://localhost:9500/parent/ParentSignUp";
-          let signinDetails = { ...values, d_picture: img.result };
-          axios.post(endpoint, signinDetails).then((result) => {
-            if (!result.data) {
-              Swal.fire("Error", result.data.message, "error");
-            } else {
-              Swal.fire("Success", result.data.message, "success");
-              router.push("/Login");
-            }
-          });
-        };
-      } else {
-        Swal.fire("Error", "Profile Picture is required", "error");
+      try {
+        const response = await axios.post(
+          "http://localhost:9500/staff/addStaff",
+          values
+        );
+        if (response.data.status) {
+          Swal.fire("Success", response.data.message, "success");
+          router.push("DashBoard");
+        } else {
+          Swal.fire("Error", response.data.message, "error");
+        }
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      } finally {
+        setSubmitting(false);
       }
     },
   });
@@ -98,23 +87,44 @@ const ParentSignUp = () => {
           <h1 className="text-center mb-3 border-bottom p-2">Sign Up</h1>
           <form action="" onSubmit={formik.handleSubmit}>
             <div className="col-11 mx-auto">
-              <div className="w-100 mb-3 p-1">
-                <label className="form-label">Full Name</label>
-                <input
-                  placeholder="First Name Middle Name Last Name"
-                  type="text"
-                  className={
-                    formik.errors.fullName && formik.touched.fullName
-                      ? "form-control input-style border-2 rounded-2 is-invalid"
-                      : "form-control input-style border-2 rounded-2"
-                  }
-                  name="fullName"
-                  onChange={formik.handleChange}
-                  value={formik.values.fullName}
-                  onBlur={formik.handleBlur}
-                />
-                <div className="text-danger">
-                  {formik.touched.fullName && formik.errors.fullName}
+              <div className="row">
+                <div className="col-6 mb-3 p-1">
+                  <label className="form-label">SurName</label>
+                  <input
+                    placeholder="SurName"
+                    type="text"
+                    className={
+                      formik.errors.surName && formik.touched.surName
+                        ? "form-control input-style border-2 rounded-2 is-invalid"
+                        : "form-control input-style border-2 rounded-2"
+                    }
+                    name="surName"
+                    onChange={formik.handleChange}
+                    value={formik.values.surName}
+                    onBlur={formik.handleBlur}
+                  />
+                  <div className="text-danger">
+                    {formik.touched.surName && formik.errors.surName}
+                  </div>
+                </div>
+                <div className="col-6 mb-3 p-1">
+                  <label className="form-label">Other Names</label>
+                  <input
+                    placeholder="Middle Name Last Name"
+                    type="text"
+                    className={
+                      formik.errors.otherNames && formik.touched.otherNames
+                        ? "form-control input-style border-2 rounded-2 is-invalid"
+                        : "form-control input-style border-2 rounded-2"
+                    }
+                    name="otherNames"
+                    onChange={formik.handleChange}
+                    value={formik.values.otherNames}
+                    onBlur={formik.handleBlur}
+                  />
+                  <div className="text-danger">
+                    {formik.touched.otherNames && formik.errors.otherNames}
+                  </div>
                 </div>
               </div>
               <div className="mb-3 p-1">
@@ -205,9 +215,9 @@ const ParentSignUp = () => {
                 <div className="row">
                   <div className="col-6">
                     <label className="form-label">Password</label>
-                   
+
                     <div className="input-group">
-                      <input 
+                      <input
                         className={
                           formik.errors.password && formik.touched.password
                             ? "form-control input-style border-2 rounded-2 is-invalid"
@@ -220,10 +230,12 @@ const ParentSignUp = () => {
                         onBlur={formik.handleBlur}
                       />
                       <div className="d-flex align-items-center">
-                        <button className="btn btn-outline-success btn-sm" type="button"
-                        onClick={handleClick}
+                        <button
+                          className="btn btn-outline-success btn-sm"
+                          type="button"
+                          onClick={handleClick}
                         >
-                        {show ? 'Hide':"Show"}
+                          {show ? "Hide" : "Show"}
                         </button>
                       </div>
                     </div>
@@ -238,7 +250,7 @@ const ParentSignUp = () => {
                       type="text"
                       className={
                         formik.errors.confirmPassword &&
-                          formik.touched.confirmPassword
+                        formik.touched.confirmPassword
                           ? "form-control input-style border-2 rounded-2 is-invalid"
                           : "form-control input-style border-2 rounded-2"
                       }
@@ -254,47 +266,6 @@ const ParentSignUp = () => {
                   </div>
                 </div>
               </div>
-
-              <div className="mb-3 p-1">
-                <div className="row">
-                  <div className="col-6">
-                    <label className="form-label">Occupation</label>
-                    <input
-                      placeholder="Occupation"
-                      type="text"
-                      className={
-                        formik.errors.occupation && formik.touched.occupation
-                          ? "form-control input-style border-2 rounded-2 is-invalid"
-                          : "form-control input-style border-2 rounded-2"
-                      }
-                      name="occupation"
-                      onChange={formik.handleChange}
-                      value={formik.values.occupation}
-                      onBlur={formik.handleBlur}
-                    />
-                    <div className="text-danger">
-                      {formik.touched.occupation && formik.errors.occupation}
-                    </div>
-                  </div>
-
-                  <div className="col-6">
-                    <label className="form-label">Profile Picture</label>
-                    <input
-                      className={
-                        formik.errors.fullName && formik.touched.fullName
-                          ? "form-control input-style border-5 rounded-4 is-invalid"
-                          : "form-control input-style border-2 rounded-3"
-                      }
-                      placeholder="Confirm Password"
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp"
-                      onChange={(e) => {
-                        setmyImage(e.target.files[0]);
-                      }}
-                    ></input>
-                  </div>
-                </div>
-              </div>
               <div className="mb-3 p-1">
                 <button
                   type="submit"
@@ -307,9 +278,6 @@ const ParentSignUp = () => {
                 <Link href={"/"} className="btn">
                   If you have an account <Link href={"/Login"}></Link>
                 </Link>
-                <Link href={"/"} className="btn">
-                  forgot Password
-                </Link>
               </div>
             </div>
           </form>
@@ -318,4 +286,4 @@ const ParentSignUp = () => {
     </div>
   );
 };
-export default ParentSignUp;
+export default AddStaff;

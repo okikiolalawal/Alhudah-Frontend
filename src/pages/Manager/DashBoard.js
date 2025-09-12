@@ -3,8 +3,10 @@ import logo from '../logo-removebg-preview.png'
 import Image from 'next/image'
 import Link from "next/link";
 import style from '../styles/SignUp.module.css'
+import { useState } from 'react';
 
 const DashBoard = () => {
+  const [show,setShow] = useState(false)
   return (
     <div>
       <div className="d-flex justify-content-between p-1 bg-success text-white align-items-center">
@@ -75,7 +77,13 @@ const DashBoard = () => {
                 <td>Jafar Lawal</td>
                 <td>JSS3</td>
                 <td>
+                  <div>
                   <button className="btn btn-success btn-sm">Details</button>
+                  <button className="btn btn-danger btn-sm ms-2">
+                    Delete
+                  </button>
+                  <button className="btn btn-primary btn-sm ms-2">Update</button>
+                  </div>
                 </td>
               </tr>
               <tr>
