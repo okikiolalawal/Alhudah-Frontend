@@ -1,12 +1,15 @@
-import { VStack, Link as ChakraLink, Flex, Box, Text } from '@chakra-ui/react';
+import { VStack, Link as ChakraLink, Flex, Box, Text, Button } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'; // make sure next-auth is installed
 
 const Layout = ({ children }) => {
   const router = useRouter();
-
+  const signOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    router.push("/StaffLogin");
+  }
   const linkItems = [
-    // { href: '/dashboard', label: 'Dashboard Overview' },
     { href: '/MBooks', label: 'Books/Fees' },
     { href: '/Parents', label: 'Parent Management' },
     { href: '/MPayment', label: 'Payment Management' },
@@ -19,10 +22,27 @@ const Layout = ({ children }) => {
 
   return (
     <Flex direction="column" minHeight="100vh">
-      <Box as="header" bg="teal.500" p={4}>
-        <Text fontSize="xl" color="white">Manager</Text>
-      </Box>
+      {/* Header */}
+      <Flex as="header" bg="teal.500" p={4} justify="space-between" align="center">
+        <Text fontSize="xl" color="white" fontWeight="bold">
+          Manager
+        </Text>
+
+        <Button
+          size="sm"
+          variant="outline"
+          color="white"
+          borderColor="white"
+          _hover={{ bg: 'white', color: 'teal.500' }}
+          onClick={() => signOut()}
+        >
+          Sign Out
+        </Button>
+      </Flex>
+
+      {/* Content Area */}
       <Flex flex="1" direction="row">
+        {/* Sidebar */}
         <Box as="nav" bg="gray.100" width="200px" p={4}>
           <VStack spacing={4} align="stretch">
             {linkItems.map((item) => (
@@ -40,12 +60,18 @@ const Layout = ({ children }) => {
             ))}
           </VStack>
         </Box>
+
+        {/* Main */}
         <Box as="main" p={4} flex="1" bg="gray.50">
           {children}
         </Box>
       </Flex>
+
+      {/* Footer */}
       <Box as="footer" bg="teal.500" p={4} textAlign="center">
-        <Text fontSize="sm" color="white">© 2024 Al Hudah Group Of Schools. All rights reserved.</Text>
+        <Text fontSize="sm" color="white">
+          © 2024 Al Hudah Group Of Schools. All rights reserved.
+        </Text>
       </Box>
     </Flex>
   );

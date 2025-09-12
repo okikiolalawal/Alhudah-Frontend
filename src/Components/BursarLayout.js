@@ -4,7 +4,11 @@ import { useRouter } from 'next/router';
 
 const Layout = ({ children }) => {
   const router = useRouter();
-
+  const signOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    router.push("/StaffLogin");
+  }
   const linkItems = [
     { href: '/GetBooks', label: 'Books/Fees' },
     { href: '/Payments', label: 'Payment' },
@@ -15,9 +19,19 @@ const Layout = ({ children }) => {
   return (
     <Flex direction="column" minHeight="100vh">
       {/* Header */}
-      <Box as="header" bg="teal.500" p={4}>
+      <Flex as="header" bg="teal.500" p={4} justify="space-between" align="center">
         <Text fontSize="xl" color="white">Bursary</Text>
-      </Box>
+        <Button
+                  size="sm"
+                  variant="outline"
+                  color="white"
+                  borderColor="white"
+                  _hover={{ bg: 'white', color: 'teal.500' }}
+                  onClick={() => signOut()}
+                >
+                  Sign Out
+                </Button>
+      </Flex>
 
       {/* Sidebar + Main */}
       <Flex flex="1" direction="row">

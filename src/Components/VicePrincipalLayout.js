@@ -4,7 +4,11 @@ import { useRouter } from "next/router";
 
 const Layout = ({ children }) => {
   const router = useRouter();
-
+  const signOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    router.push("/StaffLogin");
+  }
   const linkItems = [
     { href: "/VPClasses", label: "Class Management" },
     { href: "/VPGrading", label: "Grading Management" },
@@ -14,11 +18,21 @@ const Layout = ({ children }) => {
   return (
     <Flex direction="column" minHeight="100vh">
       {/* Header */}
-      <Box as="header" bg="teal.600" p={4} shadow="md">
+      <Flex as="header" bg="teal.500" p={4} justify="space-between" align="center">
         <Text fontSize="xl" color="white" fontWeight="bold">
           Vice Principal Panel
         </Text>
-      </Box>
+        <Button
+          size="sm"
+          variant="outline"
+          color="white"
+          borderColor="white"
+          _hover={{ bg: 'white', color: 'teal.500' }}
+          onClick={() => signOut()}
+        >
+          Sign Out
+        </Button>
+      </Flex>
 
       {/* Body */}
       <Flex direction="column" minHeight="100vh">
