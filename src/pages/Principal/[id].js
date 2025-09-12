@@ -1,4 +1,4 @@
-import Layout from '../../Components/PrincipalLayout';
+import Layout from "@/Components/PrincipalLayout";
 import { Box, SimpleGrid, Stat, StatLabel, StatNumber, Text } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
